@@ -4,7 +4,8 @@
   "description": "Unofficial Discord overlay support for MacOS",
   "main": "main.js",
   "scripts": {
-    "pack": "electron-builder --mac"
+    "pack": "electron-builder --mac",
+    "start": "electron ."
   },
   "build": {
     "productName": "DiscordOverlayMac",
@@ -16,12 +17,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer-core": "^13.5.1",
+    "puppeteer-core": "^14.3.0",
     "puppeteer-in-electron": "^3.0.5"
   },
   "devDependencies": {
-    "electron": "^17.1.2",
+    "electron": "^19.0.4",
     "electron-builder": "^23.0.2",
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   }
 }

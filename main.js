@@ -3,7 +3,15 @@ const pie = require('puppeteer-in-electron')
 const puppeteer = require('puppeteer-core')
 if (process.platform === 'darwin') {
   app.dock.show()
-  app.dock.setIcon('./src/icon/favicon.png');
+}
+
+async function clickToVoice(page) {
+  await page.waitForSelector('.install-button button');
+  await page.click('.install-button button');
+  await page.waitForSelector('button[value=voice]');
+  await page.click('button[value=voice]');
+  await page.waitForSelector('.switch .switch-toggle')
+  await page.click('.switch .switch-toggle')
 }
 
 async function createWindow() {
@@ -28,12 +36,7 @@ async function createWindow() {
     const browser = await pie.connect(app, puppeteer)
     const page = await pie.getPage(browser, initializer)
     await page.goto('https://streamkit.discord.com/overlay')
-    await page.waitForSelector('.install-button button');
-    await page.click('.install-button button');
-    await page.waitForSelector('button[value=voice]');
-    await page.click('button[value=voice]');
-    await page.waitForSelector('.switch .switch-toggle')
-    await page.click('.switch .switch-toggle')
+    await clickToVoice(page)
     initializer.on('window-all-closed', () => {
       app.quit()
     })
@@ -75,6 +78,8 @@ async function createWindow() {
           overlay.loadURL(overlayUrl.replaceAll('true', 'True'))
           await page.waitForSelector('#app-mount > div > div > div.install.is-open > div.config-link > div:nth-child(3) > input', { hidden: true, timeout: 0 })
           overlay.close()
+          overlay.setIgnoreMouseEvents(false)
+          overlay.setVisibleOnAllWorkspaces(false, { visibleOnFullScreen: false })
           return overlay = undefined;
         }
       }
